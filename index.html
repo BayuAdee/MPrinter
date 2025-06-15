@@ -12,7 +12,7 @@
     <div
       class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-sm text-white"
     >
-      <h1 class="text-xl font-bold text-center mb-4"><img src="lock.svg" alt="Lock Icon" class="w-5 h-5 inline" /> Akses Dokumen</h1>
+      <h1 class="text-xl font-bold text-center mb-4">🔐 Akses Dokumen</h1>
       <p class="text-gray-400 text-center mb-6">
         Masukkan password untuk membuka dokumen rahasia.
       </p>
@@ -45,10 +45,10 @@
           const decrypted = CryptoJS.AES.decrypt(encryptedLink, pass).toString(
             CryptoJS.enc.Utf8
           );
-          console.log("Password:", pass);
-          console.log("Encrypted:", encryptedLink);
-          console.log("Decrypted (raw):", CryptoJS.AES.decrypt(encryptedLink, pass));
-          console.log("Decrypted (utf8):", decrypted);
+          // console.log("Password:", pass);
+          // console.log("Encrypted:", encryptedLink);
+          // console.log("Decrypted (raw):", CryptoJS.AES.decrypt(encryptedLink, pass));
+          // console.log("Decrypted (utf8):", decrypted);
           if (decrypted) {
             window.location.href = decrypted;
           } else {
