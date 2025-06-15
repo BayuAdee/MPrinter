@@ -1,75 +1,63 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Akses Google Drive</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
-    <h1 class="text-2xl font-bold text-center mb-4">🔐 Akses Dokumen</h1>
-    <p class="text-gray-600 text-center mb-6">Masukkan password untuk melanjutkan</p>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Akses Dokumen Rahasia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  </head>
+  <body
+    class="bg-gray-900 min-h-screen flex items-center justify-center font-sans"
+  >
+    <div
+      class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-sm text-white"
+    >
+      <h1 class="text-xl font-bold text-center mb-4"><img src="lock.svg" alt="Lock Icon" class="w-5 h-5 inline" /> Akses Dokumen</h1>
+      <p class="text-gray-400 text-center mb-6">
+        Masukkan password untuk membuka dokumen rahasia.
+      </p>
 
-    <div class="relative mb-4">
+      <!-- Input password -->
       <input
         type="password"
         id="password"
         placeholder="Password"
         onkeydown="if(event.key === 'Enter') cekPassword()"
-        class="w-full px-4 py-2 pr-10 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        class="w-full mb-4 px-4 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none"
       />
-      <!-- Tombol ikon mata -->
-      <button
-        type="button"
-        onclick="togglePassword()"
-        class="absolute inset-y-0 right-3 flex items-center text-gray-500"
-      >
-        <!-- Ikon eye (Heroicon - default) -->
-        <svg id="iconEye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
 
-        <!-- Ikon eye-slash (Heroicon) -->
-        <svg id="iconEyeSlash" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a10.07 10.07 0 012.206-3.328m3.215-2.427A9.967 9.967 0 0112 5c4.477 0 8.268 2.943 9.542 7a10.06 10.06 0 01-4.406 5.194M15 12a3 3 0 11-6 0 3 3 0 016 0zM3 3l18 18" />
-        </svg>
+      <!-- Tombol -->
+      <button
+        onclick="cekPassword()"
+        class="w-full bg-violet-600 hover:bg-violet-700 transition py-2 rounded"
+      >
+        Akses Sekarang
       </button>
     </div>
 
-    <button
-      onclick="cekPassword()"
-      class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-    >
-      Akses Sekarang
-    </button>
-  </div>
+    <script>
+      // Hasil enkripsi dari tool sebelumnya (ganti ini sesuai hasil dari encrypt.html)
+      const encryptedLink = "U2FsdGVkX19oGNLB3CT1ImUekYrqxJTe9fj02MrzDrM=";
 
-  <script>
-    function cekPassword() {
-      const input = document.getElementById("password").value;
-      const benar = "rahasia123";
-      if (input === benar) {
-        window.location.href = "https://drive.google.com/your-folder-link"; // ganti link
-      } else {
-        alert("Password salah!");
+      function cekPassword() {
+        const pass = document.getElementById("password").value;
+        try {
+          const decrypted = CryptoJS.AES.decrypt(encryptedLink, pass).toString(
+            CryptoJS.enc.Utf8
+          );
+          console.log("Password:", pass);
+          console.log("Encrypted:", encryptedLink);
+          console.log("Decrypted (raw):", CryptoJS.AES.decrypt(encryptedLink, pass));
+          console.log("Decrypted (utf8):", decrypted);
+          if (decrypted) {
+            window.location.href = decrypted;
+          } else {
+            alert("Password salah!");
+          }
+        } catch (e) {
+          alert("Password salah atau terjadi kesalahan.");
+        }
       }
-    }
-
-    function togglePassword() {
-      const input = document.getElementById("password");
-      const iconEye = document.getElementById("iconEye");
-      const iconEyeSlash = document.getElementById("iconEyeSlash");
-
-      const isHidden = input.type === "password";
-      input.type = isHidden ? "text" : "password";
-      iconEye.classList.toggle("hidden", !isHidden);
-      iconEyeSlash.classList.toggle("hidden", isHidden);
-    }
-  </script>
-</body>
+    </script>
+  </body>
 </html>
