@@ -36,28 +36,23 @@
     </div>
 
     <script>
-      // Hasil enkripsi dari tool sebelumnya (ganti ini sesuai hasil dari encrypt.html)
-      const encryptedLink = "U2FsdGVkX18A0gLsjwxLA5fF9uUTmOqO8oIb3xM0fPIondHcXpktF24/LIIZwabt";
+    const encryptedLink ="U2FsdGVkX18A0gLsjwxLA5fF9uUTmOqO8oIb3xM0fPIondHcXpktF24/LIIZwabt";
 
-      function cekPassword() {
-        const pass = document.getElementById("password").value;
-        try {
-          const decrypted = CryptoJS.AES.decrypt(encryptedLink, pass).toString(
-            CryptoJS.enc.Utf8
-          );
-          // console.log("Password:", pass);
-          // console.log("Encrypted:", encryptedLink);
-          // console.log("Decrypted (raw):", CryptoJS.AES.decrypt(encryptedLink, pass));
-          // console.log("Decrypted (utf8):", decrypted);
-          if (decrypted) {
-            window.location.href = decrypted;
-          } else {
-            alert("Password salah!");
-          }
-        } catch (e) {
-          alert("Password salah atau terjadi kesalahan.");
+    function cekPassword() {
+      const pass = document.getElementById("password").value;
+      try {
+        const decrypted = CryptoJS.AES.decrypt(encryptedLink, pass).toString(CryptoJS.enc.Utf8
+        );
+        if (decrypted) {
+          const finalLink = decrypted.startsWith("http") ? decrypted : "https://" + decrypted;
+          window.location.href = finalLink;
+        } else {
+          alert("Password salah!");
         }
+      } catch (e) {
+        alert("Password salah atau terjadi kesalahan.");
       }
-    </script>
+    }
+  </script>
   </body>
 </html>
